@@ -1,0 +1,15 @@
+{
+"data_name":"data",
+"data_id":"data_711",
+"data_desc": "7-11 information",
+"accountability_name":"email_certification",
+"accountability_description":"XXDD",
+"files":[
+   {
+    "file_name":"7-11.csv",
+	"file_id":"file_7-11_csv",
+    "file_description":"POS據點資料，格式為CSV"
+   }
+  ]
+
+}

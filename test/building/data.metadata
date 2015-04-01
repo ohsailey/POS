@@ -1,0 +1,1 @@
+{"data_name":"data","data_id":"data_filrestation","data_desc": "filre station information","accountability_name":"email_certification","accountability_description":"XXEE","files":[   {    "file_name":"fireStation.json",	"file_id":"file_fireStation_json",    "file_description":"消防局據點資料，格式為JSON"   }  ]}
