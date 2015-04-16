@@ -44,14 +44,8 @@ class Topic:
         self.acc_path = acc_path
         self.data_path = data_path
 
-    def get_publisher(self):
-        pass
-
-    def get_id(self):
-        return self.id
-
-    def btn(self):
-        pass
+    def get_data_path(self):
+        return self.data_path
 
     def process_acc(self):
         return_val = {}
