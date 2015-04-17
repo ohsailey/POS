@@ -1,18 +1,18 @@
+from ctypes import windll
 import win32api
 import string
-from ctypes import windll
+import os
+import shutil
 
 class StorageDevice:
 	def __init__(self):
-		print 'what the'
 		self.init_drives=self.get_pos_drive()
-		print self.init_drives
+		self.current_drive = None
+
 	def _is_detectable(self):
 
-		current_drive = self.get_pos_drive()
-		print current_drive
-
-		if current_drive != self.init_drives:
+		if self.get_pos_drive() != self.init_drives:
+			self.current_drive = self.get_pos_drive()[-1]
 			return True
 		return False
 
@@ -21,7 +21,6 @@ class StorageDevice:
         #return drives
 
 	def get_name(self):
-		print win32api.GetVolumeInformation("F:\\")[0]
 		return win32api.GetVolumeInformation("F:\\")[0]
 
 	def get_pos_drive(self):
@@ -32,4 +31,17 @@ class StorageDevice:
 				drives.append(letter)
 			bitmask >>= 1
 		return drives
-#print fileSystemNameBuffer.value
+
+	def	obtain_data(self, source):
+		destination_path = self.current_drive + ":\\"
+		for files in os.listdir(source):
+			if files:
+				file_path = os.path.join(source, files)
+    			try:
+        			shutil.copy(file_path, destination_path)
+    				# eg. src and dest are the same file
+    			except shutil.Error as e:
+        			print('Error: %s' % e)
+ 					# eg. source or destination doesn't exist
+        		except IOError as e:
+        			print('Error: %s' % e.strerror)

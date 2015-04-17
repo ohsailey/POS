@@ -21,19 +21,20 @@ class TopicScreen(Screen):
     def __init__(self, **kwargs):
         super(TopicScreen, self).__init__(**kwargs)
         layout = BoxLayout(orientation='vertical')
-        self.choose_topic = None
         self.label = Label(text='Hello, this is my POS.\n'+
     'Please choose your desirable topic')
         layout.add_widget(self.label)
         self.topics = self.get_topics()
         for topic in self.topics:
             topic_btn = Button(text = topic.get_name())
-            topic_btn.bind(on_release=partial(self.changer, topic.get_name()))
+            topic_btn.bind(on_release=partial(self.changer, topic))
             layout.add_widget(topic_btn)
         self.add_widget(layout)
 	
-    def changer(self, topic_name, *args):
-        module_path = 'test.'+ topic_name + '.acc_fun.acc'
+    def changer(self, topic, *args):
+        global choose_topic
+        choose_topic = topic
+        module_path = 'test.'+ topic.get_name() + '.acc_fun.acc'
         pkg = __import__(module_path, fromlist=['AccScreen'])
         name = 'acc_screen'
         acc_view = pkg.AccScreen(name=name)
@@ -41,7 +42,7 @@ class TopicScreen(Screen):
 
 		
     def get_topics(self):
-        topics = test_pos.get_topics()
+        topics = pos.get_topics()
         return topics
         
 class DownloadScreen(Screen):
@@ -65,8 +66,8 @@ class DownloadScreen(Screen):
     def transfer_data(self,*args):
         if storage_device._is_detectable() == True :
             self.label.text = 'Start Downloading\n' + 'Do not remove your storage in the process.'
-
-            storage_device.obtain_data()
+            global choose_topic
+            storage_device.obtain_data(choose_topic.get_data_path())
             Clock.schedule_once(self.show_finish_message, 5)
         else:
             alert_popup = Popup(title='POS Alert',
@@ -80,8 +81,8 @@ class DownloadScreen(Screen):
 
     def show_finish_message(self, *args):
         self.label.text = 'Download Complete\n'+'\
-Remember to Ejet your Device.\n'+'\
-Returning to Topic Page'
+            Remember to Ejet your Device.\n'+'\
+            Returning to Topic Page'
         Clock.schedule_once(self.press_topic_page, 3)
 
 class MyApp(App):
@@ -96,6 +97,7 @@ def init_pos_gui():
     download_view = DownloadScreen(name='download_screen')
     pos_screenmanager.add_widget(topic_view)
     pos_screenmanager.add_widget(download_view)
+
 if __name__ == '__main__':
     pos_screenmanager = ScreenManager()
     pos = Pos(topic_folder)
