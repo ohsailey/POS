@@ -1,0 +1,15 @@
+{% block body %}
+  <h2>Login</h2>
+  {% if msg %}<p class="message"><strong>Msg:</strong> {{ msg }}{% endif %}
+  <form action="{{ url_for('send_subscription') }}" method="post">
+    <dl>
+      <dt>Pub Url:
+      <dd><input type="text" name="pub_url">
+      <dt>Topic ID:
+      <dd><input type="text" name="topic_id">
+      <dt>Callback Url:
+      <dd><input type="text" name="callback_url">
+      <dd><input type="submit" value="Submit">
+    </dl>
+  </form>
+{% endblock %}
